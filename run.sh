@@ -14,11 +14,29 @@
 CONTAINER_ID=$1
 shift
 PARAMS="$@"
+# Default ports
+GRPC_PORT=8554
+ADB_PORT1=5554
+ADB_PORT2=5555
+
+# Check if custom ports are provided
+if [ ! -z "$GRPC_PORT_CUSTOM" ]; then
+  GRPC_PORT=$GRPC_PORT_CUSTOM
+fi
+
+if [ ! -z "$ADB_PORT1_CUSTOM" ]; then
+  ADB_PORT1=$ADB_PORT1_CUSTOM
+fi
+
+if [ ! -z "$ADB_PORT2_CUSTOM" ]; then
+  ADB_PORT2=$ADB_PORT2_CUSTOM
+fi
+
 docker run \
  --device /dev/kvm \
- --publish 8554:8554/tcp \
- --publish 5554:5554/tcp \
- --publish 5555:5555/tcp \
+ --publish ${GRPC_PORT}:8554/tcp \
+ --publish ${ADB_PORT1}:5554/tcp \
+ --publish ${ADB_PORT2}:5555/tcp \
  -e TOKEN="$(cat ~/.emulator_console_auth_token)" \
  -e ADBKEY="$(cat ~/.android/adbkey)" \
  -e TURN \
