@@ -159,10 +159,10 @@ class DockerContainer:
         local = self.docker_image()
 
         # Available locally, get the first tag
-        if local:
+        if local and local.tags:
             return local.tags[0]
 
-        return ""
+        return f"{self.repo}{self.image_name()}:{self.docker_tag()}"
 
     def latest_name(self):
         if self.repo:
